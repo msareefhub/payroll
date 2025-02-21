@@ -1,0 +1,8 @@
+{
+  "GatewayAppURL_LOCAL": "http://localhost:3000",
+  "GatewayApiURL_LOCAL": "http://localhost/sarif/vankukil/vankukil_web_api/payroll",
+  "GatewayAppURL_STG": "http://stagehr.vankukil.com",
+  "GatewayApiURL_STG": "http://stageapi.vankukil.com/payroll",
+  "GatewayAppURL_PRD": "http://hr.vankukil.com",
+  "GatewayApiURL_PRD": "http://api.vankukil.com/payroll"
+}

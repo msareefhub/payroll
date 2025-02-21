@@ -1,0 +1,89 @@
+image: node:latest
+
+pipelines:
+  custom: # Pipelines that are triggered manually via the Bitbucket GUI
+    stage:
+      - step:
+          name: Build HR Payroll App & Artifacts
+          services:
+            - docker
+          script:
+            - npm install
+            - npm run build
+          artifacts:
+            - build/**
+      - step:
+          name: Deploy to Stage HR Payroll App
+          deployment: Staging
+          script:
+            - pipe: atlassian/ftp-deploy:0.3.0
+              variables:
+                USER: '$FTP_USERNAME_STAGING'
+                PASSWORD: '$FTP_PASSWORD_STAGING'
+                SERVER: '$FTP_HOST'
+                REMOTE_PATH: '/'
+                LOCAL_PATH: 'build/'
+    production:
+      - step:
+          name: Build HR Payroll App & Artifacts
+          services:
+            - docker
+          script:
+            - npm install
+            - npm run build
+          artifacts:
+            - build/**
+      - step:
+          name: Deploy to Prod HR Payroll App
+          deployment: Production
+          script:
+            - pipe: atlassian/ftp-deploy:0.3.0
+              variables:
+                USER: '$FTP_USERNAME'
+                PASSWORD: '$FTP_PASSWORD'
+                SERVER: '$FTP_HOST'
+                REMOTE_PATH: '/'
+                LOCAL_PATH: 'build/'
+  branches: # Automated triggers on commits to branches
+    stage:
+      - step:
+          name: Build HR Payroll App & Artifacts
+          services:
+            - docker
+          script:
+            - npm install
+            - npm run build
+          artifacts:
+            - build/**
+      - step:
+          name: STG Deploy HR Payroll App
+          deployment: Staging
+          script:
+            - pipe: atlassian/ftp-deploy:0.3.0
+              variables:
+                USER: '$FTP_USERNAME_STAGING'
+                PASSWORD: '$FTP_PASSWORD_STAGING'
+                SERVER: '$FTP_HOST'
+                REMOTE_PATH: '/'
+                LOCAL_PATH: 'build/'
+    master:
+      - step:
+          name: Build HR Payroll App & Artifacts
+          services:
+            - docker
+          script:
+            - npm install
+            - npm run build
+          artifacts:
+            - build/**
+      - step:
+          name: Deploy to Prod HR Payroll App
+          deployment: Production
+          script:
+            - pipe: atlassian/ftp-deploy:0.3.0
+              variables:
+                USER: '$FTP_USERNAME'
+                PASSWORD: '$FTP_PASSWORD'
+                SERVER: '$FTP_HOST'
+                REMOTE_PATH: '/'
+                LOCAL_PATH: 'build/'
